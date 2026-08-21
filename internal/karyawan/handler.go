@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/arie741/go-karyawan/internal/karyawan/functions"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
@@ -43,12 +44,28 @@ func (h *Handler) List(c *gin.Context) {
 		limit = limitValue
 	}
 
-	karyawans, err := h.repo.GetAll(offset, limit)
+	filter := functions.Filter{
+		Name:         c.Query("name"),
+		Position:     c.Query("position"),
+		SalaryMin:    parseIntQuery(c, "salaryMin"),
+		SalaryMax:    parseIntQuery(c, "salaryMax"),
+		BirthDateOp:  c.Query("birthDateOp"),
+		BirthDate:    parseDateQuery(c, "birthDate"),
+		BirthDateEnd: parseDateQuery(c, "birthDateEnd"),
+		JoinedOp:     c.Query("joinedOp"),
+		Joined:       parseDateQuery(c, "joined"),
+		JoinedEnd:    parseDateQuery(c, "joinedEnd"),
+	}
+
+	karyawans, err := h.repo.GetAll(offset, limit, filter.ToBSON())
 	if err != nil {
 		panic(err)
 	}
 
-	totalDocuments, err := h.repo.CountAll()
+	totalDocuments, err := h.repo.CountAll(filter.ToBSON())
+	if err != nil {
+		panic(err)
+	}
 
 	totalPages := int(math.Ceil(float64(totalDocuments) / float64(limit)))
 	currentPage := offset/limit + 1
@@ -63,11 +80,41 @@ func (h *Handler) List(c *gin.Context) {
 	}
 
 	c.HTML(http.StatusOK, "pages/index.html", gin.H{
-		"karyawans": karyawans,
-		"pages":     pages,
-		"limit":     limit,
-		"offset":    offset,
+		"karyawans":   karyawans,
+		"pages":       pages,
+		"limit":       limit,
+		"offset":      offset,
+		"filter":      filter,
+		"filterQuery": filter.QueryString(),
 	})
+}
+
+func parseIntQuery(c *gin.Context, key string) *int {
+	value := c.Query(key)
+	if value == "" {
+		return nil
+	}
+
+	parsed, err := strconv.Atoi(value)
+	if err != nil {
+		panic(err)
+	}
+
+	return &parsed
+}
+
+func parseDateQuery(c *gin.Context, key string) *time.Time {
+	value := c.Query(key)
+	if value == "" {
+		return nil
+	}
+
+	parsed, err := time.Parse("2006-01-02", value)
+	if err != nil {
+		panic(err)
+	}
+
+	return &parsed
 }
 
 func (h *Handler) FindById(c *gin.Context) {

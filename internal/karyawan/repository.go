@@ -16,10 +16,10 @@ func NewRepository(collection *mongo.Collection) *Repository {
 	return &Repository{collection: collection}
 }
 
-func (r *Repository) GetAll(offset int, limit int) ([]Karyawan, error) {
+func (r *Repository) GetAll(offset int, limit int, filter bson.M) ([]Karyawan, error) {
 	sort := bson.D{{"Name", 1}}
 	opts := options.Find().SetSkip(int64(offset)).SetLimit(int64(limit)).SetSort(sort)
-	cursor, err := r.collection.Find(context.TODO(), bson.M{}, opts)
+	cursor, err := r.collection.Find(context.TODO(), filter, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -32,8 +32,8 @@ func (r *Repository) GetAll(offset int, limit int) ([]Karyawan, error) {
 	return karyawans, nil
 }
 
-func (r *Repository) CountAll() (int64, error) {
-	totalDocuments, err := r.collection.CountDocuments(context.TODO(), bson.M{})
+func (r *Repository) CountAll(filter bson.M) (int64, error) {
+	totalDocuments, err := r.collection.CountDocuments(context.TODO(), filter)
 	if err != nil {
 		return 0, err
 	}
