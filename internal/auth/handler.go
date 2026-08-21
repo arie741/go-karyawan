@@ -19,7 +19,7 @@ func NewHandler(repo *Repository) *Handler {
 }
 
 func (h *Handler) LoginPage(c *gin.Context) {
-	c.HTML(http.StatusOK, "login.html", gin.H{})
+	c.HTML(http.StatusOK, "pages/login.html", gin.H{})
 }
 
 func (h *Handler) Login(c *gin.Context) {

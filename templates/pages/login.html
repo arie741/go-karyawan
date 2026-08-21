@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js" integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V" crossorigin="anonymous"></script>
-    <title>Login</title>
-</head>
-<body>
+{{define "pages/login.html"}}
+{{template "layouts/header.html" .}}
     <div class="mx-auto d-block w-sm border border-black rounded mt-5">
         <div class="mx-auto w-fit d-block text-3xl font-bold mt-5 mb-2">Login</div>
         <form
@@ -36,5 +28,5 @@
             {{end}}
         </form>
     </div>
-</body>
-</html>
+{{template "layouts/footer.html" .}}
+{{end}}

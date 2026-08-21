@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js" integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/hyperscript.org@0.9.93/dist/_hyperscript.min.js" integrity="sha384-/6HsqTiz02YfFBUhzTwlH/yxe68DhfnkdHiWytM3nxAzs/yvG+3FZY0f4KLnNoov" crossorigin="anonymous"></script>
-    <title>Data Karyawan</title>
-</head>
-<body>
+
+{{define "pages/index.html"}}
+{{template "layouts/header.html" .}}
     <button 
         class="bg-blue-500 rounded ms-2 mt-10 text-white px-2 py-1 w-fit cursor-pointer"
         hx-get="/modal" 
@@ -54,5 +46,5 @@
         Logout
         </button>
     </div>
-</body>
-</html>
+{{template "layouts/footer.html" .}}
+{{end}}

@@ -62,7 +62,7 @@ func (h *Handler) List(c *gin.Context) {
 		})
 	}
 
-	c.HTML(http.StatusOK, "index.html", gin.H{
+	c.HTML(http.StatusOK, "pages/index.html", gin.H{
 		"karyawans": karyawans,
 		"pages":     pages,
 		"limit":     limit,
@@ -78,7 +78,7 @@ func (h *Handler) FindById(c *gin.Context) {
 		panic(err)
 	}
 
-	c.HTML(http.StatusOK, "karyawan.html", gin.H{
+	c.HTML(http.StatusOK, "pages/karyawan.html", gin.H{
 		"karyawan": karyawan,
 	})
 }

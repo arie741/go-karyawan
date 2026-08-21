@@ -25,7 +25,7 @@ func main() {
 	router.SetFuncMap(template.FuncMap{
 		"formatRupiah": formatter.FormatRupiah,
 	})
-	router.LoadHTMLFiles("templates/index.html", "templates/karyawan.html", "templates/login.html", "templates/modal.html")
+	router.LoadHTMLGlob("templates/**/*")
 
 	// LOGIN
 	authHandler := auth.NewHandler(auth.NewRepository(database.GetCollection(mongoClient, "accounts")))
