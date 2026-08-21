@@ -1,6 +1,7 @@
 package formatter
 
 import (
+	"html/template"
 	"strconv"
 	"strings"
 )
@@ -16,4 +17,11 @@ func FormatRupiah(amount int) string {
 
 	result := "Rp. " + strings.Join(groups, ",")
 	return result
+}
+
+// SafeQuery marks an already percent-encoded query string (e.g. from
+// url.Values.Encode()) as safe, so html/template embeds it verbatim in a
+// href instead of re-escaping its "=" and "&" separators.
+func SafeQuery(query string) template.URL {
+	return template.URL(query)
 }

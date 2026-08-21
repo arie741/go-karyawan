@@ -24,6 +24,7 @@ func main() {
 	router := gin.Default()
 	router.SetFuncMap(template.FuncMap{
 		"formatRupiah": formatter.FormatRupiah,
+		"safeQuery":    formatter.SafeQuery,
 	})
 	router.LoadHTMLGlob("templates/**/*")
 

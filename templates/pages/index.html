@@ -1,14 +1,88 @@
 
 {{define "pages/index.html"}}
 {{template "layouts/header.html" .}}
-    <button 
+    <button
         class="bg-blue-500 rounded ms-2 mt-10 text-white px-2 py-1 w-fit cursor-pointer"
-        hx-get="/modal" 
-        hx-target="body" 
+        hx-get="/modal"
+        hx-target="body"
         hx-swap="beforeend"
     >
         Add New Karyawan
     </button>
+    <form method="get" action="/" class="flex flex-col gap-2 border border-black rounded w-sm m-2 p-2">
+        <div class="grid grid-cols-12 gap-1 items-center">
+            <label class="col-span-3">Name:</label>
+            <input class="col-span-9 rounded border border-black px-2 py-1" type="text" name="name" value="{{.filter.Name}}">
+        </div>
+        <div class="grid grid-cols-12 gap-1 items-center">
+            <label class="col-span-3">Position:</label>
+            <input class="col-span-9 rounded border border-black px-2 py-1" type="text" name="position" value="{{.filter.Position}}">
+        </div>
+        <div class="grid grid-cols-12 gap-1 items-center">
+            <label class="col-span-3">Salary:</label>
+            <div class="col-span-9 flex gap-2 items-center">
+                <input class="rounded border border-black px-2 py-1 w-full" type="number" name="salaryMin" placeholder="Min" value="{{.filter.SalaryMinString}}">
+                <span>-</span>
+                <input class="rounded border border-black px-2 py-1 w-full" type="number" name="salaryMax" placeholder="Max" value="{{.filter.SalaryMaxString}}">
+            </div>
+        </div>
+        <div class="grid grid-cols-12 gap-1 items-center">
+            <label class="col-span-3">Birth Date:</label>
+            <div class="col-span-9 flex gap-2 items-center">
+                <select
+                    class="rounded border border-black px-2 py-1"
+                    name="birthDateOp"
+                    _="on change
+                        if my.value is 'between'
+                            remove .hidden from #birthDateEndWrapper
+                        else
+                            add .hidden to #birthDateEndWrapper
+                        end"
+                >
+                    <option value="">--</option>
+                    <option value="on" {{if eq .filter.BirthDateOp "on"}}selected{{end}}>On</option>
+                    <option value="before" {{if eq .filter.BirthDateOp "before"}}selected{{end}}>Before</option>
+                    <option value="after" {{if eq .filter.BirthDateOp "after"}}selected{{end}}>After</option>
+                    <option value="between" {{if eq .filter.BirthDateOp "between"}}selected{{end}}>Between</option>
+                </select>
+                <input class="rounded border border-black px-2 py-1" type="date" name="birthDate" value="{{.filter.BirthDateString}}">
+                <div id="birthDateEndWrapper" class="flex gap-2 items-center {{if ne .filter.BirthDateOp "between"}}hidden{{end}}">
+                    <span>and</span>
+                    <input class="rounded border border-black px-2 py-1" type="date" name="birthDateEnd" value="{{.filter.BirthDateEndString}}">
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-12 gap-1 items-center">
+            <label class="col-span-3">Joined:</label>
+            <div class="col-span-9 flex gap-2 items-center">
+                <select
+                    class="rounded border border-black px-2 py-1"
+                    name="joinedOp"
+                    _="on change
+                        if my.value is 'between'
+                            remove .hidden from #joinedEndWrapper
+                        else
+                            add .hidden to #joinedEndWrapper
+                        end"
+                >
+                    <option value="">--</option>
+                    <option value="on" {{if eq .filter.JoinedOp "on"}}selected{{end}}>On</option>
+                    <option value="before" {{if eq .filter.JoinedOp "before"}}selected{{end}}>Before</option>
+                    <option value="after" {{if eq .filter.JoinedOp "after"}}selected{{end}}>After</option>
+                    <option value="between" {{if eq .filter.JoinedOp "between"}}selected{{end}}>Between</option>
+                </select>
+                <input class="rounded border border-black px-2 py-1" type="date" name="joined" value="{{.filter.JoinedString}}">
+                <div id="joinedEndWrapper" class="flex gap-2 items-center {{if ne .filter.JoinedOp "between"}}hidden{{end}}">
+                    <span>and</span>
+                    <input class="rounded border border-black px-2 py-1" type="date" name="joinedEnd" value="{{.filter.JoinedEndString}}">
+                </div>
+            </div>
+        </div>
+        <div class="flex gap-2 mt-2">
+            <button class="bg-blue-500 rounded text-white px-2 py-1 cursor-pointer" type="submit">Apply Filter</button>
+            <a class="bg-gray-400 rounded text-white px-2 py-1 flex items-center" href="/">Clear</a>
+        </div>
+    </form>
     <div class="flex flex-col">
         {{range .karyawans}}
             <a class="border border-black rounded w-sm m-2 p-2 cursor-pointer" href="/karyawan/{{.Id}}" target="_blank">
@@ -31,7 +105,7 @@
         {{range .pages}}
             <a 
                 class="px-[10px] py-[5px] border border-black rounded mx-[5px] {{if .Active}}bg-gray-400{{else}}bg-black{{end}}" 
-                href="/?offset={{.Offset}}&limit={{$.limit}}"
+                href="/?offset={{.Offset}}&limit={{$.limit}}{{if $.filterQuery}}&{{$.filterQuery | safeQuery}}{{end}}"
             >
                 <div class="{{if .Active}}font-bold{{end}} text-white">{{.Number}}</div>
             </a>
