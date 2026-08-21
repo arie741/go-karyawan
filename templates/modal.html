@@ -1,0 +1,52 @@
+{{block "add-karyawan-modal" .}}
+    <div 
+        class="fixed top-0 left-0 bg-black/50 w-full h-screen"
+        id="modal" 
+        _="on closeModal add .closing then remove me"
+    >
+        <div 
+            class="absolute w-full min-h-screen top-0 left-0 z-[-1]" 
+            _="on click trigger closeModal">
+        </div>
+        <div class="w-md block p-4 mt-10 mx-auto bg-white rounded border border-black z-2">
+            <div class="text-2xl mb-10"><b>Add Karyawan</b></div>
+            <form
+                hx-post="/add-karyawan"
+                hx-target="body"
+                hx-swap="outerHTML"
+            >
+                <div class="grid grid-cols-12">
+                    <div class="col-span-3 py-2">Name:</div>
+                    <div class="col-span-9"><input class="rounded border border-black px-2 py-1" type="text" name="name" required></div>
+                </div>
+                <div class="grid grid-cols-12">
+                    <div class="col-span-3 py-2">Birth Date:</div>
+                    <div class="col-span-9"><input class="rounded border border-black px-2 py-1" type="date" name="birthDate" required></div>
+                </div>
+                <div class="grid grid-cols-12">
+                    <div class="col-span-3 py-2">Salary:</div>
+                    <div class="col-span-9">Rp. <input class="rounded border border-black px-2 py-1" type="number" name="salary" required> / month</div>
+                </div>
+                <div class="grid grid-cols-12">
+                    <div class="col-span-3 py-2">Position:</div>
+                    <div class="col-span-9"><input class="rounded border border-black px-2 py-1" type="text" name="position" required></div>
+                </div>
+                <div class="grid grid-cols-12">
+                    <div class="col-span-3 py-2">Joined:</div>
+                    <div class="col-span-9"><input class="rounded border border-black px-2 py-1" type="date" name="joined" required></div>
+                </div>
+
+                <div class="flex flex-row mt-10">
+                    <button 
+                        class="cursor-pointer rounded bg-blue-500 text-white px-2 py-1 mt-3 w-fit me-4" 
+                        type="submit"
+                    >Add Karyawan</button>
+                    <button 
+                        class="cursor-pointer rounded bg-red-500 text-white px-2 py-1 mt-3 w-fit" 
+                        _="on click trigger closeModal"
+                    >Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {{end}}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js" integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V" crossorigin="anonymous"></script>
+    <title>Login</title>
+</head>
+<body>
+    <div class="mx-auto d-block w-sm border border-black rounded mt-5">
+        <div class="mx-auto w-fit d-block text-3xl font-bold mt-5 mb-2">Login</div>
+        <form
+            class="mx-auto d-block w-sm mt-10"
+            hx-swap="outerHTML"
+            hx-target="#message"
+            hx-post="/login"
+            hx-on::after-request="if(event.detail.successful) {
+                this.reset();
+            }"
+            hx-on::before-swap="event.detail.shouldSwap = true"
+        >
+            <div class="grid grid-cols-12 mx-5">
+                <label for="username" class="col-span-4">Username:</label>
+                <input class="rounded border border-black col-span-8 px-2" id="username" name="username" type="text">
+                
+            </div>
+            <div class="grid grid-cols-12 mx-5 mt-3">
+                <label for="password" class="col-span-4">Password:</label>
+                <input class="rounded border border-black col-span-8 px-2" id="password" name="password" type="password">
+
+                <button class="rounded border border-black px-3 bg-blue-500 text-[#fff] col-span-12 my-6" type="submit">Login</button>
+            </div>
+            {{block "login-message" .}}
+                <div class="mx-5 my-5" id="message">{{.message}}</div>
+            {{end}}
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js" integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hyperscript.org@0.9.93/dist/_hyperscript.min.js" integrity="sha384-/6HsqTiz02YfFBUhzTwlH/yxe68DhfnkdHiWytM3nxAzs/yvG+3FZY0f4KLnNoov" crossorigin="anonymous"></script>
+    <title>Data Karyawan</title>
+</head>
+<body>
+    <button 
+        class="bg-blue-500 rounded ms-2 mt-10 text-white px-2 py-1 w-fit cursor-pointer"
+        hx-get="/modal" 
+        hx-target="body" 
+        hx-swap="beforeend"
+    >
+        Add New Karyawan
+    </button>
+    <div class="flex flex-col">
+        {{range .karyawans}}
+            <a class="border border-black rounded w-sm m-2 p-2 cursor-pointer" href="/karyawan/{{.Id}}" target="_blank">
+                <div class="grid grid-cols-12 gap-1">
+                    <div class="col-span-3">Name:</div>
+                    <div class="col-span-9">{{.Name}}</div>
+                    <div class="col-span-3">Birth Date:</div>
+                    <div class="col-span-9">{{.BirthDate.Format "2006-01-02"}}</div>
+                    <div class="col-span-3">Salary:</div>
+                    <div class="col-span-9">{{formatRupiah .Salary}} / month</div>
+                    <div class="col-span-3">Position:</div>
+                    <div class="col-span-9">{{.Position}}</div>
+                    <div class="col-span-3">Joined:</div>
+                    <div class="col-span-9">{{.Joined.Format "2006-01-02"}}</div>
+                </div>
+            </a>
+        {{end}}
+    </div>
+    <div class="flex flex-row mx-2 mb-10">
+        {{range .pages}}
+            <a 
+                class="px-[10px] py-[5px] border border-black rounded mx-[5px] {{if .Active}}bg-gray-400{{else}}bg-black{{end}}" 
+                href="/?offset={{.Offset}}&limit={{$.limit}}"
+            >
+                <div class="{{if .Active}}font-bold{{end}} text-white">{{.Number}}</div>
+            </a>
+        {{end}}
+    </div>
+    <div class="absolute top-[10px] right-[20px]">
+        <button 
+        hx-post="/logout"
+        hx-swap="none"
+        class="rounded border border-black px-3 bg-red-500 text-[#fff] cursor-pointer"
+        >
+        Logout
+        </button>
+    </div>
+</body>
+</html>
