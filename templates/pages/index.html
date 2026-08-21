@@ -9,7 +9,14 @@
     >
         Add New Karyawan
     </button>
-    <form method="get" action="/" class="flex flex-col gap-2 border border-black rounded w-fit m-2 p-2">
+    <button
+        type="button"
+        class="block bg-blue-500 rounded ms-2 mt-2 text-white px-2 py-1 w-fit cursor-pointer"
+        _="on click toggle .hidden on #filterForm"
+    >
+        Filter
+    </button>
+    <form id="filterForm" method="get" action="/" class="hidden flex flex-col gap-2 border border-black rounded w-fit m-2 p-2">
         <div class="grid grid-cols-12 gap-1 items-center">
             <label class="col-span-3">Name:</label>
             <input class="col-span-9 rounded border border-black px-2 py-1" type="text" name="name" value="{{.filter.Name}}">
@@ -78,9 +85,16 @@
                 </div>
             </div>
         </div>
-        <div class="flex gap-2 mt-2">
+        <div class="flex gap-2 mt-2 items-center">
             <button class="bg-blue-500 rounded text-white px-2 py-1 cursor-pointer" type="submit">Apply Filter</button>
             <a class="bg-gray-400 rounded text-white px-2 py-1 flex items-center" href="/">Clear</a>
+            <button
+                type="button"
+                class="bg-gray-600 rounded text-white px-2 py-1 cursor-pointer ms-auto"
+                _="on click add .hidden to #filterForm"
+            >
+                Close
+            </button>
         </div>
     </form>
     <div class="flex flex-col">
